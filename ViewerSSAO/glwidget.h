@@ -96,7 +96,7 @@ class GLWidget : public QGLWidget {
   GLuint          depthrenderbuffer;
   GLuint          noiseTexture, ssaoFBO, ssaoTexture;
 
-  GLuint          quadVAO, quadVBO=0, quadTextCoordVBO, quadID;
+  GLuint          quadVAO, quadVBO=0, quadEBO, aquadTextCoordVBO, quadID;
 
   std::vector<Eigen::Vector3f> ssaoKernel_;
 

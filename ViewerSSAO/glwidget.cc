@@ -235,6 +235,8 @@ void GLWidget::paintGL() {
       glUniformMatrix4fv(model_location, 1, GL_FALSE, model.data());
       glUniformMatrix3fv(normal_matrix_location, 1, GL_FALSE, normal.data());
 
+      glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
+
       // TODO(students): Implement model rendering.
       glBindVertexArray(mesh_->VAO);
       glDrawElements(GL_TRIANGLES, mesh_->faces_.size(), GL_UNSIGNED_INT, 0);
@@ -260,7 +262,7 @@ void GLWidget::paintGL() {
       glClearColor(1.0f,1.0f,1.0f,1.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-      glBindFramebuffer(GL_FRAMEBUFFER, ssaoFBO);
+      //glBindFramebuffer(GL_FRAMEBUFFER, ssaoFBO);
 
       ssao_program_->bind();
 
@@ -292,7 +294,7 @@ void GLWidget::paintGL() {
 
       paintQuad();
 
-      glBindFramebuffer(GL_FRAMEBUFFER, 0);
+//      glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
       glBindTexture(GL_TEXTURE_2D, ssaoTexture);
       glGenerateMipmap(GL_TEXTURE_2D);
@@ -427,46 +429,25 @@ void GLWidget::paintQuad()
              1.0f,  1.0f, -0.05f,
              1.0f, -1.0f, -0.05f,
         };
-        GLfloat quadTextureCoord[] =
-        {
-            // Texture Coords
-            0.0f, 1.0f,
-            0.0f, 0.0f,
-            1.0f, 1.0f,
-            1.0f, 0.0f,
+
+        GLuint quadIndices[] = {
+            0, 1, 3,
+            1, 2, 3
         };
 
-        //position
-        glGenBuffers(1, &quadVBO);
-        //Generate, bind and fill VBO for vertices
+        glBindVertexArray(quadVAO);
+
         glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices)*sizeof(float), quadVertices, GL_STATIC_DRAW);
 
-        glGenBuffers(1, &quadTextCoordVBO);
-        //Generate, bind and fill VBO for texCoords
-        glBindBuffer(GL_ARRAY_BUFFER, quadTextCoordVBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(quadTextureCoord), &quadTextureCoord, GL_STATIC_DRAW);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices)*sizeof(int), quadIndices, GL_STATIC_DRAW);
 
-        std::cout << "Done!" << std::endl;
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
     }
-
-    enum {
-        VERTICES,
-        TEXTURE_COORDS
-    };
-
-    //Render
-    glBindBuffer(GL_ARRAY_BUFFER,quadVBO);
-    glEnableVertexAttribArray(VERTICES);
-    glVertexAttribPointer(VERTICES, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-
-    glBindBuffer(GL_ARRAY_BUFFER,quadTextCoordVBO);
-    glEnableVertexAttribArray(TEXTURE_COORDS);
-    glVertexAttribPointer(TEXTURE_COORDS, 2, GL_FLOAT, GL_FALSE, 0, NULL);
-
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
-    //unbind
-    glBindBuffer(GL_ARRAY_BUFFER,0);
+        glBindVertexArray(quadVAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
 
 }
