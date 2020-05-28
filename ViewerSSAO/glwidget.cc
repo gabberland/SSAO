@@ -95,11 +95,14 @@ bool GLWidget::LoadModel(const QString &filename) {
     // TODO(students): Create / Initialize buffers.
     mesh_->setUpMesh();
 
+    setupQuad();
+
     setupGBuffer();
 
     setupSSAO();
 
     setupNoise();
+
     // END.
 
     emit SetFaces(QString(std::to_string(mesh_->faces_.size() / 3).c_str()));
@@ -268,7 +271,7 @@ void GLWidget::paintGL() {
 
       glUseProgram(0);
 
-      //The  second Pass is the SSAO
+//The  second Pass is the SSAO
       camera_.SetViewport();
       glClearColor(1.0f,1.0f,1.0f,1.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -300,13 +303,13 @@ void GLWidget::paintGL() {
 
       glUniform1i(ssao_program_->uniformLocation("radius"), radius_);
 
-      glUniform3fv(ssao_program_->uniformLocation("gPosition"), 64, &ssaoKernel_[0][0]);
+      glUniform3fv(ssao_program_->uniformLocation("samples"), 64, &ssaoKernel_[0][0]);
 
       glUniform1i(ssao_program_->uniformLocation("sampleN"),sampleN_);
 
       paintQuad();
 
-      glBindFramebuffer(GL_FRAMEBUFFER, 0);
+/*      glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
       glBindTexture(GL_TEXTURE_2D, ssaoTexture);
       glGenerateMipmap(GL_TEXTURE_2D);
@@ -333,20 +336,13 @@ void GLWidget::paintGL() {
       glBindTexture(GL_TEXTURE_2D, ssaoTexture);
       glUniform1i(blur_program_->uniformLocation("ssaoInput"),0);
 
-      glUniform1i(blur_program_->uniformLocation("ssaoInput"),0);
-
-      width = camera_.GetWidth();
-      height = camera_.GetHeight();
-
-      glUniform1f(blur_program_->uniformLocation("width"), width);
-      glUniform1f(blur_program_->uniformLocation("height"),height);
-
-      float sigma = 20.0;
-
-      glUniform1f(blur_program_->uniformLocation("sigma"), sigma);
       glUniform1f(blur_program_->uniformLocation("blurRadius"), blurRadius_);
       glUniform1i(blur_program_->uniformLocation("blur_flag"), blurFlag_);
       // END.
+
+      paintQuad();*/
+
+      glUseProgram(0);
     }
   }
 }
@@ -459,7 +455,7 @@ void GLWidget::setupNoise()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 }
 
-void GLWidget::paintQuad()
+void GLWidget::setupQuad()
 {
     float quadVertices[] =
     {
@@ -475,7 +471,11 @@ void GLWidget::paintQuad()
     glBindVertexArray(quadVAO);
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0);
+}
+
+void GLWidget::paintQuad()
+{
 
     //Rendering
     glBindVertexArray(quadVAO);

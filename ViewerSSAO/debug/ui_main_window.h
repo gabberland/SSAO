@@ -18,7 +18,9 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSpacerItem>
+#include <QtWidgets/QSpinBox>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include "glwidget.h"
@@ -37,6 +39,15 @@ public:
     GLWidget *glwidget;
     QVBoxLayout *Configuration;
     QGroupBox *TreeOptions;
+    QWidget *horizontalLayoutWidget;
+    QHBoxLayout *horizontalLayout_2;
+    QRadioButton *radioButton;
+    QLabel *label;
+    QSpinBox *spinBox;
+    QWidget *horizontalLayoutWidget_2;
+    QHBoxLayout *horizontalLayout_3;
+    QLabel *label_2;
+    QSpinBox *spinBox_2;
     QSpacerItem *Spacer;
     QGroupBox *RenderOptions;
     QLabel *Label_NumFaces;
@@ -86,6 +97,49 @@ public:
         TreeOptions->setObjectName(QString::fromUtf8("TreeOptions"));
         TreeOptions->setMinimumSize(QSize(200, 0));
         TreeOptions->setMaximumSize(QSize(200, 16777215));
+        horizontalLayoutWidget = new QWidget(TreeOptions);
+        horizontalLayoutWidget->setObjectName(QString::fromUtf8("horizontalLayoutWidget"));
+        horizontalLayoutWidget->setGeometry(QRect(10, 170, 184, 80));
+        horizontalLayout_2 = new QHBoxLayout(horizontalLayoutWidget);
+        horizontalLayout_2->setSpacing(6);
+        horizontalLayout_2->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
+        horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
+        radioButton = new QRadioButton(horizontalLayoutWidget);
+        radioButton->setObjectName(QString::fromUtf8("radioButton"));
+
+        horizontalLayout_2->addWidget(radioButton);
+
+        label = new QLabel(horizontalLayoutWidget);
+        label->setObjectName(QString::fromUtf8("label"));
+
+        horizontalLayout_2->addWidget(label);
+
+        spinBox = new QSpinBox(horizontalLayoutWidget);
+        spinBox->setObjectName(QString::fromUtf8("spinBox"));
+
+        horizontalLayout_2->addWidget(spinBox);
+
+        horizontalLayout_2->setStretch(0, 2);
+        horizontalLayout_2->setStretch(1, 1);
+        horizontalLayoutWidget_2 = new QWidget(TreeOptions);
+        horizontalLayoutWidget_2->setObjectName(QString::fromUtf8("horizontalLayoutWidget_2"));
+        horizontalLayoutWidget_2->setGeometry(QRect(20, 70, 160, 80));
+        horizontalLayout_3 = new QHBoxLayout(horizontalLayoutWidget_2);
+        horizontalLayout_3->setSpacing(6);
+        horizontalLayout_3->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
+        horizontalLayout_3->setContentsMargins(0, 0, 0, 0);
+        label_2 = new QLabel(horizontalLayoutWidget_2);
+        label_2->setObjectName(QString::fromUtf8("label_2"));
+
+        horizontalLayout_3->addWidget(label_2);
+
+        spinBox_2 = new QSpinBox(horizontalLayoutWidget_2);
+        spinBox_2->setObjectName(QString::fromUtf8("spinBox_2"));
+
+        horizontalLayout_3->addWidget(spinBox_2);
+
 
         Configuration->addWidget(TreeOptions);
 
@@ -156,6 +210,9 @@ public:
         actionLoad_Specular->setText(QCoreApplication::translate("MainWindow", "Load Specular", nullptr));
         actionLoad_Diffuse->setText(QCoreApplication::translate("MainWindow", "Load Diffuse", nullptr));
         TreeOptions->setTitle(QCoreApplication::translate("MainWindow", "Options", nullptr));
+        radioButton->setText(QCoreApplication::translate("MainWindow", " Blur", nullptr));
+        label->setText(QCoreApplication::translate("MainWindow", "Value :", nullptr));
+        label_2->setText(QCoreApplication::translate("MainWindow", "Radius :", nullptr));
         RenderOptions->setTitle(QString());
         Label_NumFaces->setText(QCoreApplication::translate("MainWindow", "0", nullptr));
         Label_Faces->setText(QCoreApplication::translate("MainWindow", "Faces", nullptr));

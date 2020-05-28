@@ -67,7 +67,9 @@ OBJECTS       = debug/triangle_mesh.o \
 		debug/camera.o \
 		debug/moc_main_window.o \
 		debug/moc_glwidget.o
-DIST          = shaders/ssao.frag \
+DIST          = shaders/blur.frag \
+		shaders/blur.vert \
+		shaders/ssao.frag \
 		shaders/ssao.vert \
 		../../../Qt/5.14.2/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../Qt/5.14.2/gcc_64/mkspecs/common/unix.conf \

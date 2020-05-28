@@ -49,6 +49,8 @@ class GLWidget : public QGLWidget {
   void mouseReleaseEvent(QMouseEvent *event);
   void keyPressEvent(QKeyEvent *event);
 
+  void setupQuad();
+
   void paintQuad();
 
   void setupGBuffer();
@@ -66,6 +68,8 @@ class GLWidget : public QGLWidget {
   std::unique_ptr<QOpenGLShaderProgram> light_program_;
 
   std::unique_ptr<QOpenGLShaderProgram> ssao_program_;
+
+  std::unique_ptr<QOpenGLShaderProgram> blur_program_;
 
   /**
    * @brief camera_ Class that computes the multiple camera transform matrices.
@@ -96,13 +100,16 @@ class GLWidget : public QGLWidget {
   GLuint          depthrenderbuffer;
   GLuint          noiseTexture, ssaoFBO, ssaoTexture;
 
-  GLuint          quadVAO, quadVBO=0, quadEBO, aquadTextCoordVBO, quadID;
+  GLuint          quadVAO, quadVBO, quadEBO, aquadTextCoordVBO, quadID;
 
   std::vector<Eigen::Vector3f> ssaoKernel_;
 
   float radius_ = 0.5;
 
   int sampleN_ = 64;
+
+  int blurRadius_;
+  int blurFlag_ = 0;
 
  protected slots:
   /**

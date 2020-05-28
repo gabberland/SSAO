@@ -44,19 +44,15 @@ void main(void)
         offset.xyz /= offset.w;               // perspective divide
         offset.xyz  = offset.xyz * 0.5 + 0.5; // transform to range 0.0 - 1.0
 
-
         float sampleDepth = texture(gPosition, offset.xy).z;
 
         if (fragPos.z < sampleDepth && abs(fragPos.z - sampleDepth) < radius) {
             occlusion+=1;
         }
-
-
     }
 
     occlusion = 1.0 - (occlusion / sampleN);
     frag_color = vec4(occlusion,occlusion,occlusion,1.0);
-
-
-
+    frag_color = vec4(fragPos,1.0);
+    frag_color = vec4(TexCoords.x, TexCoords.y, 0.0,1.0);
 }

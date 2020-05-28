@@ -47,6 +47,8 @@ OTHER_FILES += \
     shaders/light.vert
 
 DISTFILES += \
+    shaders/blur.frag \
+    shaders/blur.vert \
     shaders/ssao.frag \
     shaders/ssao.vert
 
